@@ -38,7 +38,9 @@ class Main {
             System.out.println("===============================");
             System.out.println("1. Tambah Data Mahasiswa");
             System.out.println("2. Tampilkan Data Mahasiswa");
-            System.out.println("3. Keluar");
+            System.out.println("3. Cari Mahasiswa");
+            System.out.println("4. Hapus Mahasiswa");
+            System.out.println("5. Keluar");
             System.out.println("===============================");
             System.out.print("Pilih menu: ");
 
@@ -54,6 +56,12 @@ class Main {
                     case 3:
                         System.out.println("Terima kasih!");
                         break;
+                    case 4:
+                        cariMahasiswa();
+                        break;
+                    case 5:
+                        hapusMahasiswa();
+                        break;
                     default:
                         System.out.println("Pilihan tidak valid, silakan pilih lagi");
                 }
@@ -62,6 +70,30 @@ class Main {
             }
         } while (pilihan != 3);
     }
+    static void cariMahasiswa() {
+        System.out.print("Masukkan NIM Mahasiswa yang dicari: ");
+        try {
+            String nim = reader.readLine();
+            Long nimLong = Long.parseLong(nim);
+            boolean found = false;
+
+            for (Mahasiswa mahasiswa : daftarMahasiswa) {
+                if (mahasiswa.nim.equals(nimLong)) {
+                    System.out.println("=================================");
+                    System.out.println(mahasiswa.tampilDataMahasiswa());
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("Mahasiswa dengan NIM " + nim + " tidak ditemukan.");
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Input tidak valid, coba lagi.");
+        }
+    }
+
 
     static void tambahDataMahasiswa() {
         try {
@@ -99,6 +131,23 @@ class Main {
             // System.out.println("Input tidak valid, coba laagi.");
         }
     }
+    static void hapusMahasiswa() {
+        System.out.print("Masukkan NIM Mahasiswa yang akan dihapus: ");
+        try {
+            String nim = reader.readLine();
+            Long nimLong = Long.parseLong(nim);
+            boolean removed = daftarMahasiswa.removeIf(mahasiswa -> mahasiswa.nim.equals(nimLong));
+
+            if (removed) {
+                System.out.println("Mahasiswa dengan NIM " + nim + " berhasil dihapus.");
+            } else {
+                System.out.println("Mahasiswa dengan NIM " + nim + " tidak ditemukan.");
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Input tidak valid, coba lagi.");
+        }
+    }
+
 
     static void tampilkanDataMahasiswa() {
         if (daftarMahasiswa.isEmpty()) {
