@@ -1,36 +1,71 @@
 package org.example;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
+/**
+ * Class representing a student (Mahasiswa) with attributes for name, NIM, and major.
+ */
 class Mahasiswa {
     String nama;
     Long nim;
     String jurusan;
+    static String universitas;
 
+    /**
+     * Constructs a Mahasiswa object with the specified name, NIM, and major.
+     *
+     * @param nama   the name of the student
+     * @param nim    the NIM (student ID) of the student
+     * @param jurusan the major of the student
+     */
     public Mahasiswa(String nama, Long nim, String jurusan) {
         this.nama = nama;
         this.nim = nim;
         this.jurusan = jurusan;
     }
 
+    /**
+     * Displays the name of the university.
+     *
+     * @return the name of the university
+     */
     static String tampilUniversitas() {
-        return("Universitas Muhammadiyah Malang");
+        return "Universitas: " + universitas;
     }
 
+    /**
+     * Returns a string representation of the Mahasiswa data.
+     *
+     * @return a formatted string containing the student's name, NIM, and major
+     */
     String tampilDataMahasiswa() {
-        return("Nama: " + nama + ", " + "NIM: " + nim + ", " + "Jurusan: " + jurusan);
+        return "Nama: " + nama + ", " + "NIM: " + nim + ", " + "Jurusan: " + jurusan;
     }
-
 }
 
-class Main {
+/**
+ * Main class to manage student data, including adding, displaying, searching, and deleting student records.
+ */
+public class Main {
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     static ArrayList<Mahasiswa> daftarMahasiswa = new ArrayList<>();
 
+    /**
+     * Main method to run the application and display the menu.
+     *
+     * @param args command-line arguments
+     */
     public static void main(String[] args) {
+        try {
+            System.out.print("Masukkan Nama Universitas: ");
+            Mahasiswa.universitas = reader.readLine();
+        } catch (IOException e) {
+            System.out.println("Input tidak valid, program akan berjalan dengan universitas kosong.");
+        }
+
         int pilihan = 0;
         do {
             System.out.println("===============================");
@@ -54,22 +89,26 @@ class Main {
                         tampilkanDataMahasiswa();
                         break;
                     case 3:
-                        System.out.println("Terima kasih!");
-                        break;
-                    case 4:
                         cariMahasiswa();
                         break;
-                    case 5:
+                    case 4:
                         hapusMahasiswa();
                         break;
+                    case 5:
+                        System.out.println("Terima kasih!");
+                        break;
                     default:
-                        System.out.println("Pilihan tidak valid, silakan pilih lagi");
+                        System.out.println("Pilihan tidak valid, silakan pilih lagi.");
                 }
             } catch (IOException | NumberFormatException e) {
-                System.out.println("Input tidak valid, coba lagi");
+                System.out.println("Input tidak valid, coba lagi.");
             }
-        } while (pilihan != 3);
+        } while (pilihan != 5);
     }
+
+    /**
+     * Searches for a student by their NIM and displays their data.
+     */
     static void cariMahasiswa() {
         System.out.print("Masukkan NIM Mahasiswa yang dicari: ");
         try {
@@ -94,7 +133,9 @@ class Main {
         }
     }
 
-
+    /**
+     * Prompts the user to input student data and adds a new Mahasiswa to the list.
+     */
     static void tambahDataMahasiswa() {
         try {
             System.out.println("================================");
@@ -109,28 +150,30 @@ class Main {
                     nim = reader.readLine();
                     Long.parseLong(nim);
                     if (nim.length() != 15) {
-                        System.out.println("NIM tidak valid, NIM harus 15 digit");
+                        System.out.println("NIM tidak valid, NIM harus 15 digit.");
                     } else {
                         inputValid = true;
                     }
                 } catch (NumberFormatException ex) {
-                    System.out.println(Arrays.toString(ex.getStackTrace()));
-                    System.out.println("NIM tidak valid, NIM harus berupa angka");
+                    System.out.println("NIM tidak valid, NIM harus berupa angka.");
                 }
             } while (!inputValid);
 
             System.out.print("Masukkan Jurusan Mahasiswa: ");
             String jurusan = reader.readLine();
 
-            // Tambahkan Mahasiswa ke daftar setelah input selesai
             daftarMahasiswa.add(new Mahasiswa(nama, Long.parseLong(nim), jurusan));
 
             System.out.println("=================================");
             System.out.println("Data Mahasiswa Berhasil Ditambah.");
         } catch (IOException e) {
-            // System.out.println("Input tidak valid, coba laagi.");
+            System.out.println("Input tidak valid, coba lagi.");
         }
     }
+
+    /**
+     * Deletes a student record based on their NIM.
+     */
     static void hapusMahasiswa() {
         System.out.print("Masukkan NIM Mahasiswa yang akan dihapus: ");
         try {
@@ -148,7 +191,9 @@ class Main {
         }
     }
 
-
+    /**
+     * Displays all students' data in the list.
+     */
     static void tampilkanDataMahasiswa() {
         if (daftarMahasiswa.isEmpty()) {
             System.out.println("Belum Ada Data!");
